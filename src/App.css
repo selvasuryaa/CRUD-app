@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,91 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+* {
+  box-sizing: border-box;
 }
+
+body{
+  background-color: aqua;
+}
+div{
+  text-align: center;
+  /* display: static; */
+}
+div input{
+  width: 55%;
+  height: 35px;
+  padding: 15px 10px;
+  outline: none;
+  border: 2px solid black;
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.list{
+  display: flex;
+  padding: 10px 20px;
+  margin: 0 auto;
+  /* margin: 10px 0 10px 0; */
+  margin-top: 10px;
+  width: 70%;
+  border: 2px solid black;
+
+  /* height: auto;   */
+  justify-content: space-around;
+  align-items: center;
+  align-self: flex-start;
+  /* height: 80px; */
+  /* align-content: center; */
+  word-wrap: break-word;
+  font-weight: 500;
+}
+
+
+
+
+.list li{
+  list-style: none;
+  margin-right: 20px;
+  padding: 20px;
+ 
+}
+
+button{
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 14px;
+  background-color: brown;
+  color: white;
+  outline: none;
+  border-radius: 20%;
+  margin-right: 30px;
+}
+
+button:hover{
+  color: black;
+  cursor: pointer;
+}
+
+/* .container{
+  display: block;
+} */
+
+/* .input-todo{
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+} */
+
+.list input{
+  width: 30px;
+  height: 30px;
+}
+
+/* .list input
+  color: rgb(153, 51, 82);
+} */
