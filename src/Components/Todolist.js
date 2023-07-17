@@ -3,9 +3,11 @@ import TodoItem from "./TodoItem";
 
 const TodoList = ({ toggleCheck, deleteHandler, todos }) => {
     return (
-        
+
         <div>
-            {todos.length === 0 && 'No todos  '}
+            <div className="status">
+                {/* {todos.length === 0 && 'No todos  '} */}
+            </div>
             {todos.map(todo => {
                 return (
                     <TodoItem
