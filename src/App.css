@@ -26,19 +26,19 @@ input::placeholder{
   margin: 0 auto;
   border: 2px solid black;
   padding: 10px 15px;
-  width: 60vw;
+  max-width: 30%;
   margin-top: 10px;
   margin-bottom: 10px;
-  min-width: 500px;
+  min-width: 400px;
   /* flex-wrap: wrap; */
 }
 
 #todo-item label{
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   margin-right: 20px;
-
+  
 }
 
 #todo-item label input{
@@ -47,12 +47,12 @@ input::placeholder{
   width: 20px;
   margin: 0;
   margin-right: 10px;
-
+  
 }
 
 #todo-item label li{
   list-style: none;
-
+  
 }
 
 .list label{
@@ -72,7 +72,7 @@ button{
   color: white;
   outline: none;
   border-radius: 20px;
-  margin-right: 30px;
+  /* margin-right: 30px; */
 }
 
 button:hover{
@@ -94,11 +94,11 @@ button:hover{
   margin: 20px;
   font-size: 25px;
   font-weight: bold;
-
+  
 }
 
 .container input{ 
- 
+  
   width: 55%;
   height: 35px;
   padding: 15px 10px;
@@ -117,33 +117,18 @@ button:hover{
   /* height: 200PX; */
 }
 
-@media only screen and (max-width : 500px){  
+@media only screen and (max-width : 520px){  
   .container{
-    min-width: 500px;
-  
+    min-width: 500px;    
   }
 .clear{
   position: static;
-  /* top : 0px;
-  right: 0px; */
-  margin: 10px;
-  /* color: red; */
-  /* width: 30px; */
-  width: auto;
+  
   font-size: 12px;
-  padding: 8px;
-
 }
 #todo-item{
-  /* flex-shrink: 2; */
-  color: blue;
-  /* width: auto; */
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
-  /* width: fit-content; */
-  justify-content: space-around;
-  width: 100px;
-
+  width: 30px;
+  margin: 20px;
 }
 }
 h1{

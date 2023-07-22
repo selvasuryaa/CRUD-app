@@ -1,0 +1,37 @@
+.crud{
+    width: 100vw;
+    /* display: flex; */
+    height: 300px;
+}
+
+.list{
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 700px;
+margin: 0 auto;
+text-align: center;
+padding: 0;
+}
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    margin: 25px;
+    list-style: none;
+    width: 90%;
+
+}
+button{
+    margin-right: 20px;
+}
+
+.list-item span{
+    font-weight: bold;
+}
+
+.list-item div{
+    display: flex;
+}
+.btn-grp{
+    display: flex;
+}
