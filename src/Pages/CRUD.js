@@ -15,11 +15,10 @@ const CRUD = () => {
     const [editId, setEditId] = useState(null)
     const [show, setShow] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
-
-
-
-
-    // const [refresh, setRefresh] = useState(false)
+    const [formError, setFormError] = useState({
+        name: '',
+        email: ''
+    })
 
     useEffect(() => {
         getAllUsers();
@@ -29,59 +28,74 @@ const CRUD = () => {
             let res = await axios.get("https://64bd1df32320b36433c76e5a.mockapi.io/accounts")
             setUsers(res.data)
             setLoading(false)
-            // setEditId(res.data.id)
-            // toast.info('Data Retrived')
         }
         catch (err) {
             console.log('ERROR GET', err);
         }
     }
-    const validate = () => {
+    // const validate = () => {
 
-        if (name == "") {
-            toast.error('Name reqired')
-            return
+    //     if (name == "") {
+    //         toast.error('Name reqired')
+    //         return
+    //     }
+    //     if (email == '') {
+    //         toast.error('Email reqired')
+    //         return
+    //     }
+    //     else {
+    //         let emailcheck = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    //         if (!emailcheck.test(email)) {
+    //             toast.error('Not a valid Email')
+    //             return
+    //         }
+    //     }
+    //     return true
+    // }
+    const nameValidate = (name) => {
+        return name ? "" : 'Name Required'
+
+    }
+    const emailValidate = (email) => {
+        
+        let emailcheck = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        if (!emailcheck.test(email)) {
+            return 'Not a valid Email address'
+            
         }
-        if (email == '') {
-            toast.error('Email reqired')
-            return
-        }
-        else {
-            let emailcheck = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-            if (!emailcheck.test(email)) {
-                toast.error('Not a valid Email')
-                return
-            }
-        }
-        return true 
+        return email ? "" : 'Email Required'
     }
 
     const addHandler = async (e) => {
         e.preventDefault();
-        let isValid = validate()
-        if(isValid)
 
-        // if (isValid == false){
-        // toast.error("Invalid Form")
-        // return
+        let nameError = nameValidate(name);
+        let emailError = emailValidate(email);
 
-        try {
-            let response = await axios.post(`https://64bd1df32320b36433c76e5a.mockapi.io/accounts/`, {
-                // id,
-                name: name,
-                email: email,
-            })
-            if (response.status == 201) {
-                console.log('POST RESPONSE', response.data)
-                setUsers(prev => [...prev, response.data])
-                setName('')
-                setEmail('')
-                toast.success(`${response.data['name']} added`)
+        setFormError({
+            name: nameError,
+            email: emailError
+        })
+
+        const isValid = !nameError && !emailError
+        if (isValid)
+            try {
+                let response = await axios.post(`https://64bd1df32320b36433c76e5a.mockapi.io/accounts/`, {
+                    // id,
+                    name: name,
+                    email: email,
+                })
+                if (response.status == 201) {
+                    console.log('POST RESPONSE', response.data)
+                    setUsers(prev => [...prev, response.data])
+                    setName('')
+                    setEmail('')
+                    toast.success(`${response.data['name']} added`)
+                }
             }
-        }
-        catch (err) {
-            console.log('ERROR', err)
-        }
+            catch (err) {
+                console.log('ERROR', err)
+            }
 
     }
     const deleteHandler = async (id) => {
@@ -100,8 +114,8 @@ const CRUD = () => {
         }
     }
     const editHandler = (id) => {
-        setShow(true)
         setShowSubmit(false)
+        setShow(true)
         axios.get(`https://64bd1df32320b36433c76e5a.mockapi.io/accounts/${id}`)
             .then(res => {
                 if (res) {
@@ -137,7 +151,7 @@ const CRUD = () => {
                 return
             }
         }
-        
+
 
         axios.put(`https://64bd1df32320b36433c76e5a.mockapi.io/accounts/${editId}`, {
             name: name,
@@ -152,6 +166,8 @@ const CRUD = () => {
                 setName('')
                 setEmail('')
                 setShow(false)
+                setShowSubmit(true)
+
             })
             .catch(err => console.log('put req error', err))
     }
@@ -173,78 +189,84 @@ const CRUD = () => {
             <div style={{ height: '100vh', color: 'brown', verticalAlign: 'center', fontWeight: 'bold', fontSize: '30px', display: 'grid', placeContent: 'center' }}>Loading...</div>)
     }
 
-
     return (
         <div className="crud">
             <span >{loading}</span>
             <ToastContainer
                 // autoClose
-                delay={2000}
+                delay={1000}
                 pauseOnHover={false}
-                // draggablePercent={50}
                 transition={Flip}
                 theme="dark"
             />
-            <div>
-                <div>
-                    <h2>Add User</h2>
+            {/* <div> */}
+            <h2 style={{ marginTop: '10px' }}>Add User</h2>
+            <div className="input-flex">
+                <div className="form-grp">
                     <input
-                        style={{ width: '250px', marginRight: "15px", height: '30px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '17px' }}
+                        style={{ width: '250px', marginRight: "15px", height: '40px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '18px', fontWeight: 'bold' }}
                         name='name'
                         type="text"
                         placeholder="Enter name"
                         value={name}
                         onChange={(e) => setName(e.target.value)} />
-                    <input style={{ width: '250px', marginRight: "15px", height: '30px', outline: 'none', border: '1px solid black', padding: '10px 15px', fontSize: '17px' }}
+                    {formError.name && <p style={{ color: 'red' }}>{formError.name}</p>}
+                </div>
+                <div className="form-grp">
+                    <input style={{ width: '250px', marginRight: "15px", height: '40px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '18px', fontWeight: 'bold' }}
                         name='email'
                         type="text"
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} />
-                    {showSubmit ? <button onClick={addHandler}>Submit</button> : null}
-                    {show ?
-                        <button style={{ backgroundColor: 'yellow', color: 'black' }}
-                            onClick={handleDataUpdate} >Update</button>
-                        : null}
+                    {formError.email && <p style={{ color: 'red', height: '100%' }} >{formError.email}</p>}
 
                 </div>
+                {showSubmit ? <button onClick={addHandler}>Submit</button> : null}
+                {show ?
+                    <button style={{ backgroundColor: 'green', color: 'black', outline: 'none', border: '1px solid black', preset: '10px' }}
+                        onClick={handleDataUpdate} >Update</button>
+                    : null}
+
             </div>
+            {/* </div> */}
+            {users.length == 0 ? <h2>No Users</h2> :
+                <Table className="ui celled green" padded={false} collapsing={true} color='orange' sortable textAlign="center" style={{ margin: '20px 60px', fontSize: '15px', fontWeight: 'bold' }}>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell sorted='descending'>ID</TableHeaderCell>
+                            <TableHeaderCell sorted='descending'>Name</TableHeaderCell>
+                            <TableHeaderCell sorted='descending'>Email</TableHeaderCell>
+                            <TableHeaderCell sorted='descending'>Actions</TableHeaderCell>
 
-            <Table className="ui celled green large" padded={false} collapsing={true} color='orange' sortable textAlign="center" style={{ margin: '20px' }}>
-                <TableHeader>
-                    <TableRow>
-                        <TableHeaderCell sorted='descending'>ID</TableHeaderCell>
-                        <TableHeaderCell sorted='descending'>Name</TableHeaderCell>
-                        <TableHeaderCell sorted='descending'>Email</TableHeaderCell>
-                        <TableHeaderCell sorted='descending'>Actions</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {users !== [] ?
+                            users.map((user, index) => {
+                                return (
+                                    <TableRow key={user.id}>
+                                        <Table.Cell width={1}>{user.id} </Table.Cell>
+                                        <Table.Cell width={2}>{user.name}</Table.Cell>
+                                        <Table.Cell width={2}>{user.email}</Table.Cell>
+                                        <Table.Cell width={2}>
+                                            <button onClick={() => {
+                                                editHandler(user.id)
+                                                setEditId(user.id)
+                                            }
+                                            }>Edit</button>
+                                            <button style={{ backgroundColor: 'red', color: 'white' }}
+                                                onClick={() => deleteHandler(user.id)}>
+                                                Delete
+                                            </button>
+                                        </Table.Cell>
 
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {users !== [] ?
-                        users.map((user, index) => {
-                            return (
-                                <TableRow key={user.id}>
-                                    <Table.Cell width={1}>{user.id} </Table.Cell>
-                                    <Table.Cell width={2}>{user.name}</Table.Cell>
-                                    <Table.Cell width={2}>{user.email}</Table.Cell>
-                                    <Table.Cell width={2}>
-                                        <button onClick={() => {
-                                            editHandler(user.id)
-                                            setEditId(user.id)
-                                        }
-                                        }>Edit</button>
-                                        <button style={{ backgroundColor: 'red', color: 'white' }}
-                                            onClick={() => deleteHandler(user.id)}>
-                                            Delete
-                                        </button>
-                                    </Table.Cell>
-
-                                </TableRow>
-                            )
-                        }) : null}
-                </TableBody>
-            </Table>
+                                    </TableRow>
+                                )
+                            }) : null}
+                    </TableBody>
+                </Table>
+            }
 
         </div>
     )
