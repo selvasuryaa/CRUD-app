@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
 import axios from 'axios';
+import React, { useEffect, useState } from "react"
 import "./Crud.css";
-import { Bounce, Flip, ToastContainer, toast } from 'react-toastify';
+import AddUser from "./AddUser";
 import 'react-toastify/dist/ReactToastify.css';
-import { Table, TableCell, TableHeaderCell, TableRow, TableHeader, TableBody } from "semantic-ui-react";
+import { Flip, ToastContainer, toast } from 'react-toastify';
+import UserTable from './UserTable';
 
 // "https://64bd1df32320b36433c76e5a.mockapi.io/accounts"
 
@@ -13,7 +14,7 @@ const CRUD = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [editId, setEditId] = useState(null)
-    const [show, setShow] = useState(false)
+    const [showUpdate, setShowUpdate] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
     const [formError, setFormError] = useState({
         name: '',
@@ -57,11 +58,10 @@ const CRUD = () => {
 
     }
     const emailValidate = (email) => {
-        
+
         let emailcheck = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         if (!emailcheck.test(email)) {
             return 'Not a valid Email address'
-            
         }
         return email ? "" : 'Email Required'
     }
@@ -115,7 +115,7 @@ const CRUD = () => {
     }
     const editHandler = (id) => {
         setShowSubmit(false)
-        setShow(true)
+        setShowUpdate(true)
         axios.get(`https://64bd1df32320b36433c76e5a.mockapi.io/accounts/${id}`)
             .then(res => {
                 if (res) {
@@ -165,7 +165,7 @@ const CRUD = () => {
                 getAllUsers();
                 setName('')
                 setEmail('')
-                setShow(false)
+                setShowUpdate(false)
                 setShowSubmit(true)
 
             })
@@ -199,79 +199,30 @@ const CRUD = () => {
                 transition={Flip}
                 theme="dark"
             />
-            {/* <div> */}
-            <h2 style={{ marginTop: '10px' }}>Add User</h2>
-            <div className="input-flex">
-                <div className="form-grp">
-                    <input
-                        style={{ width: '250px', marginRight: "15px", height: '40px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '18px', fontWeight: 'bold' }}
-                        name='name'
-                        type="text"
-                        placeholder="Enter name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)} />
-                    {formError.name && <p style={{ color: 'red' }}>{formError.name}</p>}
-                </div>
-                <div className="form-grp">
-                    <input style={{ width: '250px', marginRight: "15px", height: '40px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '18px', fontWeight: 'bold' }}
-                        name='email'
-                        type="text"
-                        placeholder="Enter Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} />
-                    {formError.email && <p style={{ color: 'red', height: '100%' }} >{formError.email}</p>}
-
-                </div>
-                {showSubmit ? <button onClick={addHandler}>Submit</button> : null}
-                {show ?
-                    <button style={{ backgroundColor: 'green', color: 'black', outline: 'none', border: '1px solid black', preset: '10px' }}
-                        onClick={handleDataUpdate} >Update</button>
-                    : null}
-
-            </div>
-            {/* </div> */}
-            {users.length == 0 ? <h2>No Users</h2> :
-                <Table className="ui celled green" padded={false} collapsing={true} color='orange' sortable textAlign="center" style={{ margin: '20px 60px', fontSize: '15px', fontWeight: 'bold' }}>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHeaderCell sorted='descending'>ID</TableHeaderCell>
-                            <TableHeaderCell sorted='descending'>Name</TableHeaderCell>
-                            <TableHeaderCell sorted='descending'>Email</TableHeaderCell>
-                            <TableHeaderCell sorted='descending'>Actions</TableHeaderCell>
-
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {users !== [] ?
-                            users.map((user, index) => {
-                                return (
-                                    <TableRow key={user.id}>
-                                        <Table.Cell width={1}>{user.id} </Table.Cell>
-                                        <Table.Cell width={2}>{user.name}</Table.Cell>
-                                        <Table.Cell width={2}>{user.email}</Table.Cell>
-                                        <Table.Cell width={2}>
-                                            <button onClick={() => {
-                                                editHandler(user.id)
-                                                setEditId(user.id)
-                                            }
-                                            }>Edit</button>
-                                            <button style={{ backgroundColor: 'red', color: 'white' }}
-                                                onClick={() => deleteHandler(user.id)}>
-                                                Delete
-                                            </button>
-                                        </Table.Cell>
-
-                                    </TableRow>
-                                )
-                            }) : null}
-                    </TableBody>
-                </Table>
-            }
+            <AddUser
+                setEmail={setEmail}
+                setName={setName}
+                formError={formError}
+                email={email}
+                userName={name}
+                onSubmit={addHandler}
+                onUpdate ={handleDataUpdate}
+                showSubmit={showSubmit}
+                showUpdate={showUpdate}
+                 />
+            
+            <UserTable
+             users={users}
+             onEdit ={editHandler}
+             onDelete = {deleteHandler}
+             editId={editId}
+             setEditId={setEditId}
+            />
 
         </div>
     )
 }
-
+export default CRUD;
 
 
 {/* <ul className="list" key={index} >
@@ -301,6 +252,3 @@ const CRUD = () => {
 //         </div>
 //     )
 // }
-
-
-export default CRUD;
