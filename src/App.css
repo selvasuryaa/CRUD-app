@@ -137,3 +137,9 @@ h1{
   margin: 0;
   margin-bottom: 10px;
 }
+
+.ui{
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}

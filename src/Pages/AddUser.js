@@ -1,4 +1,5 @@
 import React from "react"
+import './Crud.css'
 
 const AddUser = ({
   userName,
@@ -13,8 +14,8 @@ const AddUser = ({
 
 }) => {
   return (
-    <>
-      <h2 style={{ marginTop: '10px' }}>Add User</h2>
+    <div style={{height:'170px'}}>
+      <h2 style={{ marginTop: '10px', marginBottom:'10px' }}>Add User</h2>
       <div className="input-flex">
         <div className="form-grp">
           <input
@@ -24,7 +25,7 @@ const AddUser = ({
             placeholder="Enter name"
             value={userName}
             onChange={(e) => setName(e.target.value)} />
-          {formError.userName && <p style={{ color: 'red' }}>{formError.userName}</p>}
+          {formError.name && <p style={{ color: 'red' }}>{formError.name}</p>}
         </div>
         <div className="form-grp">
           <input style={{ width: '250px', marginRight: "15px", height: '40px', outline: 'none', border: '1px solid black', padding: '15px 10px', fontSize: '18px', fontWeight: 'bold' }}
@@ -43,7 +44,7 @@ const AddUser = ({
           : null}
 
       </div>
-    </>
+    </div>
   )
 };
 

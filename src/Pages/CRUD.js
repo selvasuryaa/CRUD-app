@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react"
-import "./Crud.css";
 import AddUser from "./AddUser";
-import 'react-toastify/dist/ReactToastify.css';
-import { Flip, ToastContainer, toast } from 'react-toastify';
+import "./Crud.css";
 import UserTable from './UserTable';
+import { Flip, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Button } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
 // "https://64bd1df32320b36433c76e5a.mockapi.io/accounts"
 
@@ -21,9 +23,23 @@ const CRUD = () => {
         email: ''
     })
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         getAllUsers();
     }, [])
+
+    // useEffect(() => {
+    //     const nameError = nameValidate(name);
+    //     const emailError = emailValidate(email);
+    //     setFormError({
+    //         ...formError,
+    //         name: nameError,
+    //         email: emailError
+    //     })
+    //     console.log('Validation Updated')
+    // }, [name, email])
+
     const getAllUsers = async () => {
         try {
             let res = await axios.get("https://64bd1df32320b36433c76e5a.mockapi.io/accounts")
@@ -58,17 +74,20 @@ const CRUD = () => {
 
     }
     const emailValidate = (email) => {
+        // return 
+        if (email == '') {
+            return 'Email Required'
+        }
+        let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
-        let emailcheck = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-        if (!emailcheck.test(email)) {
+        if (!emailRegex.test(email)) {
             return 'Not a valid Email address'
         }
-        return email ? "" : 'Email Required'
+        return;
     }
 
     const addHandler = async (e) => {
         e.preventDefault();
-
         let nameError = nameValidate(name);
         let emailError = emailValidate(email);
 
@@ -184,13 +203,18 @@ const CRUD = () => {
 
     // }
 
+    const navigateHandler = () => {
+        navigate('/todo')
+    }
+
     if (loading) {
         return (
             <div style={{ height: '100vh', color: 'brown', verticalAlign: 'center', fontWeight: 'bold', fontSize: '30px', display: 'grid', placeContent: 'center' }}>Loading...</div>)
-    }
-
-    return (
-        <div className="crud">
+        }
+        
+        return (
+            <div className="crud">
+            <Button labelPosition='right' floated='left' icon='right chevron' content='Go to TODO App' color='blue' style={{ position: 'absolute', top: '5px', left: '10px' }} onClick={navigateHandler} />
             <span >{loading}</span>
             <ToastContainer
                 // autoClose
@@ -199,25 +223,29 @@ const CRUD = () => {
                 transition={Flip}
                 theme="dark"
             />
-            <AddUser
-                setEmail={setEmail}
-                setName={setName}
-                formError={formError}
-                email={email}
-                userName={name}
-                onSubmit={addHandler}
-                onUpdate ={handleDataUpdate}
-                showSubmit={showSubmit}
-                showUpdate={showUpdate}
-                 />
-            
+            <div className='add-user'>
+
+                <AddUser
+                    setEmail={setEmail}
+                    setName={setName}
+                    formError={formError}
+                    email={email}
+                    userName={name}
+                    onSubmit={addHandler}
+                    onUpdate={handleDataUpdate}
+                    showSubmit={showSubmit}
+                    showUpdate={showUpdate}
+                />
+            </div>
             <UserTable
-             users={users}
-             onEdit ={editHandler}
-             onDelete = {deleteHandler}
-             editId={editId}
-             setEditId={setEditId}
+                users={users}
+                onEdit={editHandler}
+                onDelete={deleteHandler}
+                editId={editId}
+                setEditId={setEditId}
             />
+
+
 
         </div>
     )

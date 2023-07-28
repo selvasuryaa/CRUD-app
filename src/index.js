@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import 'semantic-ui-css/semantic.min.css' 
-import App from './App';
+import 'semantic-ui-css/semantic.min.css'
+// import App from './App';
 import reportWebVitals from './reportWebVitals';
-import CRUD from './Pages/CRUD';
+// import CRUD from './Pages/CRUD';
+// import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+// import HomePage from './Pages/HomePage';
+// import NotFound from './Pages/NotFound';
+import MainRouter from './MainRouter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  // <React.StrictMode>
-    <CRUD/>
-    // <App/>
-  // </React.StrictMode>
+root.render(  
+  <MainRouter/>
 );
 
 // If you want to start measuring performance in your app, pass a function

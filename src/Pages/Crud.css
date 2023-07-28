@@ -47,6 +47,8 @@ button{
     align-items: flex-start; 
     justify-content: space-evenly;
 }
-    
+.add-user{
+    height: 500px;
+}
 
 

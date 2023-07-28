@@ -1,7 +1,10 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import TodoList from './Components/Todolist';
-// import UseRef from './useref';
+import { useNavigate } from 'react-router-dom';
+// import arrow from './arrow.jpg'
+import { Button } from 'semantic-ui-react'
+
 
 const LOCAL_STORAGE_KEY = 'TODO.ITEMS'
 
@@ -15,6 +18,8 @@ function App() {
     // setTodos(storedTodo)
   })
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
   
   useEffect(() => {
     try {
@@ -101,6 +106,11 @@ function App() {
   console.log('re rendered')
 
   console.log(todos)
+
+const navigateHandler = () =>{
+  navigate('/crud')
+}
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -120,6 +130,12 @@ function App() {
 
         </div>
         <button className='clear' onClick={clearCompletedHandler}>Clear Completed Todos</button>
+        {/* <div> */}
+
+        {/* <button className='navigate' onClick={navigateHandler}>Go to CRUD App<span><img src={arrow} width={30} height={30}/></span></button> */}
+        <Button className='navigate' labelPosition='right' floated='left' icon='right chevron' content='Go to CRUD App' color='blue' style={{position:'absolute'}} onClick={navigateHandler}/>
+        {/* </div> */}
+
 
       </div>
       <p

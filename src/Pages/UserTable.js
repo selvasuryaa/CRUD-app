@@ -14,7 +14,7 @@ const UserTable = ({
     return (
         <div>
             {users.length == 0 ? <h2 style={{ float: 'left', marginLeft: '30px' }}>No Users</h2> :
-                <Table className="ui celled green" padded={false} collapsing={true} color='orange' sortable textAlign="center" style={{ margin: '20px 60px', fontSize: '15px', fontWeight: 'bold' }}>
+                <Table className="ui celled green" padded={false} collapsing={true} color='orange' sortable textAlign="center" style={{ margin: '150px 90px', fontSize: '15px', fontWeight: 'bold' }}>
                     <TableHeader>
                         <TableRow>
                             <TableHeaderCell sorted='descending'>ID</TableHeaderCell>
